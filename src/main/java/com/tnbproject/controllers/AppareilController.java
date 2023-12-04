@@ -5,40 +5,50 @@ import com.tnbproject.bean.Appareil;
 
 import com.tnbproject.services.AppareilService;
 import lombok.AllArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "api/appareils")
-@AllArgsConstructor
+@RequestMapping("/api/controller/appareil")
+@CrossOrigin
 public class AppareilController {
 
+
+
+
+    @Autowired
     private AppareilService appareilService;
 
-    @GetMapping(value = "/")
+    @PostMapping("/")
+    public Appareil save(@RequestBody Appareil appareil) {
+        return appareilService.save(appareil);
+    }
+
+    @GetMapping("/id/{id}")
+    public Optional<Appareil> findById(@PathVariable Long id) {
+        return appareilService.findById(id);
+    }
+
+    @DeleteMapping("/id/{id}")
+    public void deleteById(@PathVariable Long id) {
+         appareilService.deleteById(id);
+    }
+
+    @GetMapping("/")
     public List<Appareil> findAll() {
         return appareilService.findAll();
     }
 
-    @PostMapping(value = "")
-    public <S extends Appareil> S save(@RequestBody S entity) {
-        return appareilService.save(entity);
+
+   
+
+    @PutMapping("/update/updateall")
+    public void updateAll(@RequestBody Appareil appInfo) {
+        appareilService.updateAll(appInfo);
     }
 
-    @GetMapping(value = "id/{id}")
-    public Optional<Appareil> findById(@PathVariable Long aLong) {
-        return appareilService.findById(aLong);
-    }
-
-    @DeleteMapping(value = "id/{id}")
-    public void deleteById(@PathVariable Long aLong) {
-        appareilService.deleteById(aLong);
-    }
-
-    @DeleteMapping(value = "")
-    public void deleteAll() {
-        appareilService.deleteAll();
-    }
 }
